@@ -2,6 +2,8 @@ import os
 import json
 import time
 
+from .sanitize import sanitize_attributes
+
 __submit_pool = None
 
 def get_db():
