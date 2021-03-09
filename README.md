@@ -1,5 +1,13 @@
 # Spider Utils
 
+## 安装方法
+
+```console
+$ python setup.py install
+```
+
+## 说明
+
 爬虫辅助工具
 
 ### 1. get_db
