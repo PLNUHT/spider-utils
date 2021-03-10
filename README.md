@@ -12,7 +12,7 @@ $ python setup.py install
 
 ### 1. get_db
 
-获取数据库实例，在调试状态下默认使用sqlite，在当前目录下创建`db.sqlite`文件
+获取数据库实例，在调试状态下默认使用sqlite，在当前目录下创建`db.sqlite`文件。相关文档请参考 [docs](http://docs.peewee-orm.com/en/latest/peewee/quickstart.html)
 
 ### 2. ProxyManager
 
@@ -28,4 +28,13 @@ $ python setup.py install
 result["_"].print()
 ```
 
-来查看解析结果的细节情况。
+来查看解析结果的细节情况。参考代码 `examples/submit.py`。
+
+### 4. run(func, interval, on_shutdown = None)
+
+定时任务运行程序，参数：
+* func: 定时运行的函数
+* interval: 函数func运行的时间间隔（单位为秒）
+* on_shutdown: 在程序终止时调用的函数（通常在代码更新等情况下会终止程序，可以在此时进行数据保存等操作）
+
+参考 `examples/run_interval.py`

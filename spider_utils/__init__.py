@@ -89,3 +89,5 @@ def submit(data):
                 "msg": "Invalid html format",
                 "_": v
             }
+
+from .cron import run

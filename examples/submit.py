@@ -1,7 +1,6 @@
 import spider_utils
 
 def main():
-
     result = {
         "lang": "zh",
         "src": "test",
@@ -12,6 +11,8 @@ def main():
     }
 
     v = spider_utils.submit(result)
+    print(v)
+    v["_"].print()
 
 if __name__ == "__main__":
     main()
