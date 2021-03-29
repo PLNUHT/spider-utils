@@ -44,7 +44,7 @@ def submit(data):
         res = None
         while True:
             try:
-                v = __submit_pool.request("POST", "http://gather.service", body=json.dumps(data, ensure_ascii=False).encode("utf-8"), headers={'Content-Type': 'application/json'})
+                v = __submit_pool.request("POST", "http://gather.service/data", body=json.dumps(data, ensure_ascii=False).encode("utf-8"), headers={'Content-Type': 'application/json'})
                 str_data = v.data.decode("utf-8")
                 res = json.loads(str_data)
             except UnicodeDecodeError as e:
