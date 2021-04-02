@@ -26,7 +26,7 @@ setuptools.setup(
     install_requires=requirements,
     include_package_data=True,
     package_data={
-        "spider-utils": [
+        "spider_utils": [
             "ualist.txt",
         ]
     },
