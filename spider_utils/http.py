@@ -22,7 +22,7 @@ class PoolWarpper:
         """
         if headers is None:
             headers = {}
-        hsaUA = False
+        hasUA = False
         for kw in headers.keys():
             if kw.lower() == "user-agent":
                 hasUA = True
