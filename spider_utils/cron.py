@@ -23,11 +23,14 @@ def run(func, interval, on_shutdown=None):
             func()
         except KeyboardInterrupt:
             sys.stdout.write("Keyboard Interrupted\n")
+            traceback.print_exc(file=sys.stdout)
+            sys.stdout.flush()
             handlers.on_shutdown()
             break
         except Exception as e:
             sys.stdout.write("Exception:\n")
-            traceback.print_exc()
+            traceback.print_exc(file=sys.stdout)
+            sys.stdout.flush()
         end_time = time.time()
 
         time_used = end_time - start_time
