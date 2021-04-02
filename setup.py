@@ -23,5 +23,10 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
-    install_requires=requirements
+    install_requires=requirements,
+    package_data={
+        "spider-utils": [
+            "ualist.txt",
+        ]
+    },
 )

@@ -3,6 +3,7 @@ import json
 import time
 
 from .sanitize import sanitize_attributes
+from .http import ProxyManager
 
 __submit_pool = None
 
@@ -26,13 +27,7 @@ def get_db():
             }
         )
 
-def ProxyManager(**kwargs):
-    import urllib3
-    if  "PRODUCTION" in os.environ:
-        urllib3.disable_warnings()
-        return urllib3.ProxyManager("http://proxy.service/", cert_reqs="CERT_NONE", timeout=urllib3.Timeout(connect=None, read=None), **kwargs)
-    else:
-        return urllib3.PoolManager(**kwargs)
+
 
 def submit(data):
     global __submit_pool
