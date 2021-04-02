@@ -1,7 +1,7 @@
 FROM node:lts-alpine
 WORKDIR /build
 RUN npm install user-agents
-RUN echo "const ua = require('user-agents');for(let i = 0; i < 10000; ++ i) console.log( (new ua()).toString() );" | node - > ualist.txt
+RUN echo "const ua = require('user-agents');for(let i = 0; i < 10000; ++ i) console.log( (new ua({'deviceCategory': 'desktop'})).toString() );" | node - > ualist.txt
 
 FROM python:3.7
 WORKDIR /build
