@@ -34,7 +34,7 @@ def submit(data):
     if  "PRODUCTION" in os.environ:
         if __submit_pool is None:
             import urllib3
-            __submit_pool = urllib3.PoolManager()
+            __submit_pool = urllib3.PoolManager(maxsize=32)
         
         res = None
         while True:
