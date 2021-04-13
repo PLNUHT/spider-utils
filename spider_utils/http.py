@@ -1,12 +1,17 @@
 import pkg_resources, random
 import urllib3, os
+import threading
+
+local = threading.local()
+
 
 class PoolWarpper:
-    def __init__(self, pool : urllib3.PoolManager, clear_its=None):
+    def __init__(self, pool : urllib3.ProxyManager, clear_its=None, **kwargs):
         self.__pool = pool
         self.__uas = []
         self.__clear_its = clear_its
         self.__curr_cnt = 0
+        self.__kwargs = kwargs
         for line in pkg_resources.resource_stream(__name__, "ualist.txt").readlines():
             self.__uas.append( line.strip() )
 
@@ -22,6 +27,10 @@ class PoolWarpper:
         :meth:`request_encode_url`, :meth:`request_encode_body`,
         or even the lowest level :meth:`urlopen`.
         """
+        if self.__pool is None:
+            if not hasattr(local, "pool"):
+                local.pool = urllib3.ProxyManager("http://proxy.service/", cert_reqs="CERT_NONE", timeout=urllib3.Timeout(connect=None, read=None), **self.__kwargs)
+
         if headers is None:
             headers = {}
         hasUA = False
@@ -36,14 +45,19 @@ class PoolWarpper:
         err = None
         for i in range(5):
             try:
-                ret = self.__pool.request(method, url, fields, headers, **urlopen_kw)
+                if self.__pool is None:
+                    local.pool.request(method, url, fields, headers, **urlopen_kw)
+                else:
+                    ret = self.__pool.request(method, url, fields, headers, **urlopen_kw)
             except urllib3.exceptions.TimeoutError as e:
                 err = e
-                self.__pool.pools.clear()
+                if self.__pool is None:
+                    local.pool.clear()
             else:
                 self.__curr_cnt += 1
                 if self.__clear_its is not None and self.__curr_cnt >= self.__clear_its:
-                    self.__pool.pools.clear()
+                    if self.__pool is None:
+                        local.pool.clear()
                     self.__curr_cnt = 0
                 return ret
 
@@ -52,6 +66,6 @@ class PoolWarpper:
 def ProxyManager(**kwargs) -> PoolWarpper:
     if  "PRODUCTION" in os.environ:
         urllib3.disable_warnings()
-        return PoolWarpper(urllib3.ProxyManager("http://proxy.service/", cert_reqs="CERT_NONE", timeout=urllib3.Timeout(connect=None, read=None), **kwargs), clear_its=8)
+        return PoolWarpper(None, clear_its=8)
     else:
         return PoolWarpper(urllib3.PoolManager(**kwargs))
