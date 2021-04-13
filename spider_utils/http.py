@@ -46,7 +46,7 @@ class PoolWarpper:
         for i in range(5):
             try:
                 if self.__pool is None:
-                    local.pool.request(method, url, fields, headers, **urlopen_kw)
+                    ret = local.pool.request(method, url, fields, headers, **urlopen_kw)
                 else:
                     ret = self.__pool.request(method, url, fields, headers, **urlopen_kw)
             except urllib3.exceptions.TimeoutError as e:
