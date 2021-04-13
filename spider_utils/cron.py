@@ -6,7 +6,7 @@ class Handlers:
     def __init__(self, on_shutdown):
         self.__on_shutdown = on_shutdown
     
-    def on_shutdown(self):
+    def on_shutdown(self, *args):
         sys.stdout.write("Get sigterm signal:\n")
         self.__on_shutdown()
         sys.exit(0)

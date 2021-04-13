@@ -16,7 +16,7 @@ class ThreadPool:
             logger.info("SIGTERM received")
             self.sigterm = True
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
         finally:
             self.threads.release()
             self.cnt -= 1
