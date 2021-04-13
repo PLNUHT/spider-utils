@@ -2,9 +2,11 @@ import pkg_resources, random
 import urllib3, os
 
 class PoolWarpper:
-    def __init__(self, pool : urllib3.PoolManager):
+    def __init__(self, pool : urllib3.PoolManager, clear_its=None):
         self.__pool = pool
         self.__uas = []
+        self.__clear_its = clear_its
+        self.__curr_cnt = 0
         for line in pkg_resources.resource_stream(__name__, "ualist.txt").readlines():
             self.__uas.append( line.strip() )
 
@@ -37,13 +39,17 @@ class PoolWarpper:
                 ret = self.__pool.request(method, url, fields, headers, **urlopen_kw)
             except urllib3.exceptions.TimeoutError as e:
                 err = e
+                self.__pool.pools.clear()
             else:
                 return ret
+        self.__curr_cnt += 1
+        if self.__clear_its is not None and self.__curr_cnt >= self.__clear_its:
+            self.__pool.pools.clear()
         raise err
         
 def ProxyManager(**kwargs) -> PoolWarpper:
     if  "PRODUCTION" in os.environ:
         urllib3.disable_warnings()
-        return PoolWarpper(urllib3.ProxyManager("http://proxy.service/", cert_reqs="CERT_NONE", timeout=urllib3.Timeout(connect=None, read=None), **kwargs))
+        return PoolWarpper(urllib3.ProxyManager("http://proxy.service/", cert_reqs="CERT_NONE", timeout=urllib3.Timeout(connect=None, read=None), **kwargs), clear_its=25)
     else:
         return PoolWarpper(urllib3.PoolManager(**kwargs))
