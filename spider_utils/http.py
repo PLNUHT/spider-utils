@@ -41,15 +41,16 @@ class PoolWarpper:
                 err = e
                 self.__pool.pools.clear()
             else:
+                self.__curr_cnt += 1
+                if self.__clear_its is not None and self.__curr_cnt >= self.__clear_its:
+                    self.__pool.pools.clear()
+                    self.__curr_cnt = 0
                 return ret
-        self.__curr_cnt += 1
-        if self.__clear_its is not None and self.__curr_cnt >= self.__clear_its:
-            self.__pool.pools.clear()
+        
         raise err
         
 def ProxyManager(**kwargs) -> PoolWarpper:
     if  "PRODUCTION" in os.environ:
-        urllib3.disable_warnings()
         return PoolWarpper(urllib3.ProxyManager("http://proxy.service/", cert_reqs="CERT_NONE", timeout=urllib3.Timeout(connect=None, read=None), **kwargs), clear_its=8)
     else:
         return PoolWarpper(urllib3.PoolManager(**kwargs))
