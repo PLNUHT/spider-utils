@@ -10,7 +10,7 @@ with  open("requirements.txt") as freq:
 
 setuptools.setup(
     name="spider-utils",
-    version="0.0.4",
+    version="0.0.5",
     author="a710128",
     author_email="qbjooo@qq.com",
     description="spider utils",
