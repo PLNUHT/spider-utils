@@ -28,7 +28,7 @@ class PoolWarpper:
         or even the lowest level :meth:`urlopen`.
         """
         if self.__pool is None:
-            if not hasattr(local, "pool"):
+            if (not hasattr(local, "pool")) or (local.pool is None):
                 local.pool = urllib3.ProxyManager("http://proxy.service/", cert_reqs="CERT_NONE", timeout=urllib3.Timeout(connect=None, read=None), **self.__kwargs)
 
         if headers is None:
