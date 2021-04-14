@@ -33,7 +33,7 @@ class ThreadPool:
         self.threads.acquire()
         with self.lock:
             thd = self._thread_ids[-1]
-            self._thread_ids = self.threads[:-1]
+            self._thread_ids = self._thread_ids[:-1]
         if self.sigterm:
             raise KeyboardInterrupt()
         threading.Thread(target=self._run_wrapper, args=(thd, target, args)).start()
