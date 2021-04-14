@@ -63,9 +63,9 @@ class PoolWarpper:
 
         raise err
         
-def ProxyManager(**kwargs) -> PoolWarpper:
+def ProxyManager(clear_its=18, **kwargs) -> PoolWarpper:
     if  "PRODUCTION" in os.environ:
         urllib3.disable_warnings()
-        return PoolWarpper(None, clear_its=8)
+        return PoolWarpper(None, clear_its=clear_its)
     else:
         return PoolWarpper(urllib3.PoolManager(**kwargs))
