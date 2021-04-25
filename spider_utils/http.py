@@ -49,6 +49,11 @@ class PoolWarpper:
                     ret = local.pool.request(method, url, fields, headers, **urlopen_kw)
                 else:
                     ret = self.__pool.request(method, url, fields, headers, **urlopen_kw)
+                if ret.status == 407:
+                    err = Exception("Proxy error")
+                    if self.__pool is None:
+                        local.pool.clear()
+                    continue
             except urllib3.exceptions.TimeoutError as e:
                 err = e
                 if self.__pool is None:
