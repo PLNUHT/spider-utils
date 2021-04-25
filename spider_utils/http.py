@@ -54,7 +54,7 @@ class PoolWarpper:
                     if self.__pool is None:
                         local.pool.clear()
                     continue
-            except urllib3.exceptions.TimeoutError as e:
+            except (urllib3.exceptions.TimeoutError, urllib3.exceptions.MaxRetryError) as e:
                 err = e
                 if self.__pool is None:
                     local.pool.clear()
