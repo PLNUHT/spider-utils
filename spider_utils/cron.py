@@ -8,7 +8,8 @@ class Handlers:
     
     def on_shutdown(self, *args):
         sys.stdout.write("Get sigterm signal:\n")
-        self.__on_shutdown()
+        if self.__on_shutdown is not None:
+            self.__on_shutdown()
         sys.exit(0)
     
 
