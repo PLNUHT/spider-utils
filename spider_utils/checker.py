@@ -6,6 +6,7 @@ CONTAINER_MAP = {
     "table": ["tr"],
     "tr": ["td", "th"],
     "ol": ["li"],
+    "ul": ["li"],
     "a": ["_"],
     "i": ["_"],
     "b": ["_"],
