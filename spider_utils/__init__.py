@@ -1,6 +1,7 @@
 import os
 import json
 import time
+import urllib3
 
 from .sanitize import sanitize_attributes
 from .http import ProxyManager
@@ -33,7 +34,6 @@ def submit(data):
     global __submit_pool
     if  "PRODUCTION" in os.environ:
         if __submit_pool is None:
-            import urllib3
             __submit_pool = urllib3.PoolManager(maxsize=32)
         
         res = None
