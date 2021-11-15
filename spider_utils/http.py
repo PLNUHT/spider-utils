@@ -15,6 +15,11 @@ class PoolWarpper:
         for line in pkg_resources.resource_stream(__name__, "ualist.txt").readlines():
             self.__uas.append( line.strip() )
 
+    def clear(self):
+        if self.__pool is None:
+            local.pool.clear()
+        else:
+            self.__pool.clear()
     
     def request(self, method, url, fields=None, headers=None, **urlopen_kw):
         """
